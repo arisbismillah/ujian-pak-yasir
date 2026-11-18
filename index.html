@@ -1,0 +1,807 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Company Profile Kompetensi Keahlian Teknik Komputer dan Jaringan">
+<title>TKJ | Company Profile</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --bg:#071426;
+  --panel:#10233d;
+  --blue:#38bdf8;
+  --cyan:#67e8f9;
+  --text:#eef6ff;
+  --muted:#a9bdd3;
+  --line:#29415e;
+}
+
+* {box-sizing:border-box}
+html {scroll-behavior:smooth}
+body {
+  margin:0;
+  font-family:"Plus Jakarta Sans",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+}
+a {color:inherit;text-decoration:none}
+.container {width:min(1120px,92%);margin:auto}
+
+header {
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:#071426ef;
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(14px);
+}
+nav {
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+.brand {font-weight:800;font-size:19px}
+.brand span {color:var(--blue)}
+.navlinks {display:flex;gap:20px;color:var(--muted);font-size:13px}
+
+.btn {
+  border:0;
+  border-radius:12px;
+  padding:11px 17px;
+  background:var(--blue);
+  color:#042033;
+  font-weight:800;
+  cursor:pointer;
+  font:inherit;
+  font-size:13px;
+}
+.btn.secondary {
+  background:#1c3858;
+  color:var(--text);
+  border:1px solid var(--line);
+}
+.btn.danger {background:#7f1d1d;color:white}
+.btn:hover {filter:brightness(1.1)}
+
+.hero {
+  padding:85px 0;
+  background:
+    radial-gradient(ellipse at 80% 20%,#07598566,transparent 42%),
+    linear-gradient(135deg,#071426,#0c2340);
+}
+.hero-grid {
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:40px;
+  align-items:center;
+}
+.eyebrow {
+  color:var(--cyan);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+h1 {
+  font-size:clamp(38px,6vw,68px);
+  line-height:1.1;
+  margin:14px 0;
+}
+.hero p,.section-head p {color:var(--muted)}
+.hero-actions,.actions {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+.tech-card {
+  background:linear-gradient(145deg,#123a5b,#0b1b31);
+  border:1px solid #39749a88;
+  padding:28px;
+  border-radius:24px;
+}
+.tech-card .big {
+  font-size:54px;
+  font-weight:800;
+  color:var(--cyan);
+}
+.tech-card small {color:var(--muted)}
+
+section {padding:70px 0}
+.section-head {margin-bottom:28px}
+.section-head h2 {font-size:clamp(26px,4vw,38px);margin:5px 0}
+
+.split,.cards {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+.cards {grid-template-columns:repeat(3,1fr)}
+.info-box,.card,.content-item,.admin-panel {
+  background:var(--panel);
+  border:1px solid var(--line);
+  padding:23px;
+  border-radius:18px;
+}
+.card p,.info-box p,.content-item p {color:var(--muted)}
+.card p {font-size:14px;margin:0}
+.symbol {font-size:27px}
+
+.content-list {display:grid;gap:13px}
+.content-item small {color:var(--cyan)}
+.content-item p {white-space:pre-wrap}
+
+.contact {
+  background:linear-gradient(120deg,#0c3150,#10233d);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:30px;
+}
+
+.admin-wrap {
+  background:#091a2e;
+  border-top:1px solid var(--line);
+}
+.admin-panel {margin-top:18px}
+label {
+  display:block;
+  font-size:13px;
+  color:var(--muted);
+  margin:12px 0 6px;
+}
+input,textarea,select {
+  width:100%;
+  background:#08182a;
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px;
+  font:inherit;
+  font-size:14px;
+}
+textarea {min-height:125px;resize:vertical}
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.status {
+  color:var(--cyan);
+  font-size:13px;
+  min-height:22px;
+}
+.hidden {display:none!important}
+.notice {
+  padding:13px;
+  border-radius:10px;
+  background:#382d12;
+  color:#fce7a1;
+  font-size:12px;
+  margin-top:15px;
+}
+.admin-entry {
+  border-bottom:1px solid var(--line);
+  padding:15px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.muted {color:var(--muted)}
+footer {
+  border-top:1px solid var(--line);
+  padding:25px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+@media(max-width:760px) {
+  .navlinks {display:none}
+  .hero-grid,.split,.cards,.form-grid {grid-template-columns:1fr}
+  .hero {padding:60px 0}
+  .admin-entry {align-items:flex-start;flex-direction:column}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <a class="brand" href="#">TKJ<span>.</span>SMK</a>
+
+      <div class="navlinks">
+        <a href="#tentang">Tentang</a>
+        <a href="#kompetensi">Kompetensi</a>
+        <a href="#informasi">Informasi</a>
+        <a href="#kontak">Kontak</a>
+      </div>
+
+      <a class="btn secondary" href="#admin">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">Teknik Komputer dan Jaringan</div>
+      <h1>Membangun Masa Depan Lewat
+        <span style="color:var(--cyan)">Teknologi.</span>
+      </h1>
+      <p>
+        Selamat datang di website resmi Kompetensi Keahlian
+        Teknik Komputer dan Jaringan. Tempat belajar,
+        berinovasi, dan mengembangkan keterampilan teknologi.
+      </p>
+      <div class="hero-actions">
+        <a class="btn" href="#tentang">Jelajahi Jurusan</a>
+        <a class="btn secondary" href="#informasi">Lihat Informasi</a>
+      </div>
+    </div>
+
+    <div class="tech-card">
+      <div class="big">TKJ</div>
+      <h2>Think · Connect · Create</h2>
+      <small>Belajar jaringan, komputer, server, dan teknologi digital.</small>
+    </div>
+  </div>
+</section>
+
+<section id="tentang">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Tentang Kami</div>
+      <h2>Mengenal Jurusan TKJ</h2>
+      <p>
+        Teknik Komputer dan Jaringan mempelajari perakitan
+        komputer, instalasi jaringan, administrasi server,
+        dan dasar keamanan jaringan.
+      </p>
+    </div>
+
+    <div class="split">
+      <div class="info-box">
+        <div class="symbol">🎯</div>
+        <h3>Visi</h3>
+        <p>Menjadi kompetensi keahlian yang unggul, kreatif,
+        disiplin, dan adaptif terhadap perkembangan teknologi.</p>
+      </div>
+
+      <div class="info-box">
+        <div class="symbol">🚀</div>
+        <h3>Misi</h3>
+        <p>Meningkatkan kompetensi peserta didik melalui
+        pembelajaran praktik, kerja sama, dan inovasi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kompetensi" style="background:#0a1b30">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Yang Dipelajari</div>
+      <h2>Kompetensi Keahlian</h2>
+      <p>Materi pembelajaran di bidang Teknik Komputer dan Jaringan.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <div class="symbol">🖥️</div>
+        <h3>Komputer</h3>
+        <p>Perakitan, instalasi sistem operasi, perawatan,
+        dan troubleshooting komputer.</p>
+      </article>
+
+      <article class="card">
+        <div class="symbol">🌐</div>
+        <h3>Jaringan</h3>
+        <p>Konfigurasi LAN, routing, switching,
+        pengalamatan IP, dan perangkat jaringan.</p>
+      </article>
+
+      <article class="card">
+        <div class="symbol">🗄️</div>
+        <h3>Server & Web</h3>
+        <p>Administrasi server, layanan jaringan,
+        basis data, dan pengembangan web.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="informasi">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Pusat Informasi</div>
+      <h2>Berita dan Kegiatan TKJ</h2>
+      <p>Informasi yang ditambahkan admin akan muncul di sini.</p>
+    </div>
+
+    <div id="publicContent" class="content-list">
+      <p class="muted">Memuat informasi...</p>
+    </div>
+  </div>
+</section>
+
+<section id="kontak">
+  <div class="container">
+    <div class="contact">
+      <div class="eyebrow">Hubungi Kami</div>
+      <h2>Ingin mengenal TKJ lebih dekat?</h2>
+      <p class="muted">
+        Hubungi pihak sekolah untuk informasi lebih lanjut.
+      </p>
+      <p>
+        <strong>Nama sekolah:</strong> <span id="schoolName">SMK BANJAR ASRI</span><br>
+        <strong>Alamat:</strong> CIMAUNG<br>
+        <strong>Email/Telepon:</strong> 083853391532
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="admin" class="admin-wrap">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Content Management</div>
+      <h2>Dashboard Admin</h2>
+      <p>Masuk untuk mengelola konten website TKJ.</p>
+    </div>
+
+    <!-- FORM LOGIN -->
+    <div class="admin-panel" id="loginPanel">
+      <h3>Login Admin</h3>
+
+      <form id="loginForm">
+        <label for="email">Email admin</label>
+        <input id="email" type="email"
+          placeholder="admin@email.com"
+          autocomplete="username" required>
+
+        <label for="password">Password</label>
+        <input id="password" type="password"
+          placeholder="Password akun Supabase"
+          autocomplete="current-password" required>
+
+        <div class="actions">
+          <button class="btn" type="submit" id="loginBtn">Login</button>
+        </div>
+      </form>
+
+      <p class="status" id="loginStatus"></p>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="admin-panel hidden" id="dashboard">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <h3>Kelola Konten Website</h3>
+        <button class="btn secondary" id="logoutBtn">Logout</button>
+      </div>
+
+      <form id="contentForm">
+        <input type="hidden" id="contentId">
+
+        <div class="form-grid">
+          <div>
+            <label for="category">Kategori</label>
+            <select id="category">
+              <option>Berita</option>
+              <option>Kegiatan</option>
+              <option>Prestasi</option>
+              <option>Pengumuman</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="title">Judul informasi</label>
+            <input id="title" required maxlength="120"
+              placeholder="Contoh: Praktik Konfigurasi Router">
+          </div>
+        </div>
+
+        <label for="body">Isi informasi</label>
+        <textarea id="body" required
+          placeholder="Tuliskan informasi..."></textarea>
+
+        <div class="actions">
+          <button class="btn" type="submit" id="saveBtn">
+            Simpan Konten
+          </button>
+          <button class="btn secondary" type="button" id="resetBtn">
+            Kosongkan Form
+          </button>
+        </div>
+
+        <p class="status" id="formStatus"></p>
+      </form>
+
+      <hr style="border:0;border-top:1px solid var(--line);margin:25px 0">
+
+      <h3>Daftar Konten Tersimpan</h3>
+      <div id="adminContent" class="muted">Memuat data...</div>
+    </div>
+
+    <div class="notice">
+      Keamanan: gunakan hanya publishable/anon key di frontend.
+      Jangan memasukkan secret key atau service_role key.
+      Keamanan data harus diatur menggunakan RLS dan policy
+      khusus admin di Supabase.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    © <span id="year"></span> Kompetensi Keahlian TKJ · Company Profile
+  </div>
+</footer>
+
+<script>
+// ======================================
+// 1. KONFIGURASI SUPABASE
+// ======================================
+
+// Ganti dengan URL project Supabase kamu.
+const SUPABASE_URL = "https://lmeecdhvmdaxdwvdnfzn.supabase.co";
+
+// Gunakan anon key lama atau publishable key.
+// JANGAN gunakan secret/service_role key.
+const SUPABASE_ANON_KEY = "sb_publishable_EjMR3rysQ_koLtTxFPFcDg_TseelJUE";
+
+const TABLE_NAME = "konten_tkj";
+
+const configured =
+  !SUPABASE_URL.includes("YOUR_PROJECT_ID") &&
+  !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE");
+
+const db = configured
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
+const $ = id => document.getElementById(id);
+
+$("year").textContent = new Date().getFullYear();
+
+// ======================================
+// 2. FUNGSI KEAMANAN TAMPILAN
+// ======================================
+
+function escapeHTML(value = "") {
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[ch]));
+}
+
+function showSetupMessage() {
+  $("publicContent").textContent =
+    "Supabase belum dikonfigurasi. Periksa URL dan API key.";
+}
+
+// ======================================
+// 3. MENAMPILKAN KONTEN PUBLIK
+// ======================================
+
+async function loadPublicContent() {
+  if (!db) return showSetupMessage();
+
+  const {data,error} = await db
+    .from(TABLE_NAME)
+    .select("id,category,title,body,created_at")
+    .order("created_at",{ascending:false});
+
+  if (error) {
+    $("publicContent").textContent =
+      "Gagal memuat informasi: " + error.message;
+    return;
+  }
+
+  if (!data.length) {
+    $("publicContent").textContent =
+      "Belum ada informasi yang ditambahkan.";
+    return;
+  }
+
+  $("publicContent").innerHTML = data.map(item => `
+    <article class="content-item">
+      <small>${escapeHTML(item.category || "Informasi")}</small>
+      <h3>${escapeHTML(item.title)}</h3>
+      <p>${escapeHTML(item.body)}</p>
+    </article>
+  `).join("");
+}
+
+// ======================================
+// 4. MENAMPILKAN KONTEN ADMIN
+// ======================================
+
+async function loadAdminContent() {
+  if (!db) return;
+
+  const {data,error} = await db
+    .from(TABLE_NAME)
+    .select("id,category,title,body,created_at")
+    .order("created_at",{ascending:false});
+
+  if (error) {
+    $("adminContent").textContent =
+      "Gagal memuat: " + error.message;
+    return;
+  }
+
+  if (!data.length) {
+    $("adminContent").textContent =
+      "Belum ada konten tersimpan.";
+    return;
+  }
+
+  $("adminContent").innerHTML = data.map(item => `
+    <div class="admin-entry">
+      <div>
+        <strong>${escapeHTML(item.title)}</strong>
+        <div class="muted" style="font-size:12px">
+          ${escapeHTML(item.category)}
+          · ${item.created_at
+            ? new Date(item.created_at).toLocaleString("id-ID")
+            : ""}
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn secondary"
+          data-edit="${escapeHTML(item.id)}">Edit</button>
+
+        <button class="btn danger"
+          data-delete="${escapeHTML(item.id)}">Hapus</button>
+      </div>
+    </div>
+  `).join("");
+
+  $("adminContent").querySelectorAll("[data-edit]").forEach(btn => {
+    btn.addEventListener("click",() => {
+      const item = data.find(x => String(x.id) === btn.dataset.edit);
+      editContent(item);
+    });
+  });
+
+  $("adminContent").querySelectorAll("[data-delete]").forEach(btn => {
+    btn.addEventListener("click",() => {
+      deleteContent(btn.dataset.delete);
+    });
+  });
+}
+
+// ======================================
+// 5. EDIT KONTEN
+// ======================================
+
+function editContent(item) {
+  if (!item) return;
+
+  $("contentId").value = item.id;
+  $("category").value = item.category;
+  $("title").value = item.title;
+  $("body").value = item.body;
+
+  $("saveBtn").textContent = "Perbarui Konten";
+  $("formStatus").textContent = "Mode edit aktif.";
+
+  $("contentForm").scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+}
+
+// ======================================
+// 6. HAPUS KONTEN
+// ======================================
+
+async function deleteContent(id) {
+  if (!confirm("Yakin ingin menghapus konten ini?")) return;
+
+  const {error} = await db
+    .from(TABLE_NAME)
+    .delete()
+    .eq("id",id);
+
+  if (error) {
+    alert("Gagal menghapus: " + error.message);
+    return;
+  }
+
+  await refreshContent();
+}
+
+// ======================================
+// 7. REFRESH DATA
+// ======================================
+
+async function refreshContent() {
+  await loadPublicContent();
+  await loadAdminContent();
+}
+
+// ======================================
+// 8. STATUS LOGIN ADMIN
+// ======================================
+
+async function updateAuthUI() {
+  const {data,error} = await db.auth.getSession();
+
+  if (error) {
+    $("loginStatus").textContent = error.message;
+    return;
+  }
+
+  const session = data.session;
+
+  $("loginPanel").classList.toggle("hidden",!!session);
+  $("dashboard").classList.toggle("hidden",!session);
+
+  if (session) await loadAdminContent();
+}
+
+// ======================================
+// 9. HUBUNGKAN SUPABASE
+// ======================================
+
+if (!db) {
+  showSetupMessage();
+  $("loginStatus").textContent =
+    "Isi URL dan API key Supabase terlebih dahulu.";
+} else {
+  loadPublicContent();
+
+  db.auth.onAuthStateChange(() => {
+    setTimeout(updateAuthUI,0);
+  });
+
+  updateAuthUI();
+}
+
+// ======================================
+// 10. LOGIN ADMIN
+// ======================================
+
+$("loginForm").addEventListener("submit",async event => {
+  event.preventDefault();
+
+  if (!db) {
+    $("loginStatus").textContent =
+      "Supabase belum dikonfigurasi.";
+    return;
+  }
+
+  $("loginBtn").disabled = true;
+  $("loginBtn").textContent = "Memproses...";
+  $("loginStatus").textContent = "Sedang login...";
+
+  try {
+    const {error} = await db.auth.signInWithPassword({
+      email:$("email").value.trim(),
+      password:$("password").value
+    });
+
+    if (error) {
+      $("loginStatus").textContent =
+        "Login gagal: " + error.message;
+    } else {
+      $("loginStatus").textContent =
+        "Login berhasil!";
+      $("password").value = "";
+    }
+  } finally {
+    $("loginBtn").disabled = false;
+    $("loginBtn").textContent = "Login";
+  }
+});
+
+// ======================================
+// 11. LOGOUT ADMIN
+// ======================================
+
+$("logoutBtn").addEventListener("click",async () => {
+  if (!db) return;
+
+  const {error} = await db.auth.signOut();
+
+  if (error) {
+    alert("Logout gagal: " + error.message);
+    return;
+  }
+
+  $("loginStatus").textContent = "Berhasil logout.";
+  $("contentForm").reset();
+  $("contentId").value = "";
+});
+
+// ======================================
+// 12. TAMBAH DAN UPDATE KONTEN
+// ======================================
+
+$("contentForm").addEventListener("submit",async event => {
+  event.preventDefault();
+
+  if (!db) return;
+
+  // Pastikan sesi masih tersedia.
+  const {data:{session}} = await db.auth.getSession();
+
+  if (!session) {
+    $("formStatus").textContent =
+      "Silakan login kembali.";
+    return;
+  }
+
+  const id = $("contentId").value;
+
+  const payload = {
+    category:$("category").value,
+    title:$("title").value.trim(),
+    body:$("body").value.trim()
+  };
+
+  if (!payload.title || !payload.body) return;
+
+  $("saveBtn").disabled = true;
+  $("formStatus").textContent = "Menyimpan...";
+
+  try {
+    const result = id
+      ? await db.from(TABLE_NAME).update(payload).eq("id",id)
+      : await db.from(TABLE_NAME).insert(payload);
+
+    if (result.error) {
+      $("formStatus").textContent =
+        "Gagal: " + result.error.message;
+      return;
+    }
+
+    $("formStatus").textContent =
+      "Konten berhasil disimpan!";
+
+    $("contentForm").reset();
+    $("contentId").value = "";
+    $("saveBtn").textContent = "Simpan Konten";
+
+    await refreshContent();
+
+  } finally {
+    $("saveBtn").disabled = false;
+  }
+});
+
+// ======================================
+// 13. KOSONGKAN FORM
+// ======================================
+
+$("resetBtn").addEventListener("click",() => {
+  $("contentForm").reset();
+  $("contentId").value = "";
+  $("saveBtn").textContent = "Simpan Konten";
+  $("formStatus").textContent = "Form dikosongkan.";
+});
+
+</script>
+
+</body>
+</html>
