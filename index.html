@@ -209,6 +209,7 @@ footer {
         <a href="#profil">Profil</a>
         <a href="#kompetensi">Kompetensi</a>
         <a href="#akses">Portal</a>
+        <a href="#informasi">Materi & Tugas</a>
     </nav>
 </header>
 
@@ -274,6 +275,8 @@ footer {
         </div>
     </section>
 
+    <!-- PORTAL PENGGUNA -->
+
     <section id="akses">
         <h2>Portal Pengguna</h2>
 
@@ -281,9 +284,14 @@ footer {
 
             <div class="card">
                 <h3>Portal Siswa</h3>
-                <p>Akses materi, tugas, dan pengumuman pembelajaran.</p>
+                <p>
+                    Lihat materi, tugas, dan pengumuman
+                    pembelajaran tanpa perlu login.
+                </p>
                 <br>
-                <button onclick="showLogin('siswa')">Login Siswa</button>
+                <a href="#informasi">
+                    <button>Lihat Materi & Tugas</button>
+                </a>
             </div>
 
             <div class="card">
@@ -301,6 +309,28 @@ footer {
             </div>
 
         </div>
+    </section>
+
+    <!-- INFORMASI PUBLIK -->
+
+    <section id="informasi">
+
+        <h2>Informasi Pembelajaran</h2>
+
+        <p class="muted">
+            Materi, tugas, dan pengumuman terbaru dari guru.
+        </p>
+
+        <br>
+
+        <div id="publicLearning">
+            Memuat informasi pembelajaran...
+        </div>
+
+        <button class="secondary" onclick="loadPublicLearning()">
+            Refresh Informasi
+        </button>
+
     </section>
 
 </main>
@@ -352,15 +382,6 @@ footer {
 
         <button class="secondary" onclick="logout()">Keluar</button>
 
-    </div>
-
-    <!-- DASHBOARD SISWA -->
-
-    <div id="studentArea" class="hidden">
-        <section>
-            <h2>Informasi Pembelajaran</h2>
-            <div id="studentContent"></div>
-        </section>
     </div>
 
     <!-- DASHBOARD GURU -->
@@ -499,7 +520,7 @@ function showLogin(role) {
     $("email").value = "";
     $("password").value = "";
 
-    if (role === "siswa" || role === "guru") {
+    if (role === "guru") {
 
         $("passwordGroup").classList.add("hidden");
         $("password").required = false;
@@ -546,7 +567,7 @@ function setMessage(message) {
 
 
 // =================================
-// 6. LOGIN
+// 6. LOGIN GURU DAN ADMIN
 // =================================
 
 async function login(event) {
@@ -561,16 +582,13 @@ async function login(event) {
 
     try {
 
-        // LOGIN SISWA DAN GURU MENGGUNAKAN MAGIC LINK
+        // LOGIN GURU MENGGUNAKAN MAGIC LINK
 
-        if (
-            selectedRole === "siswa" ||
-            selectedRole === "guru"
-        ) {
+        if (selectedRole === "guru") {
 
             localStorage.setItem(
                 "selectedRole",
-                selectedRole
+                "guru"
             );
 
             const { error } = await db.auth.signInWithOtp({
@@ -579,8 +597,6 @@ async function login(event) {
 
                 options: {
                     shouldCreateUser: false,
-
-                    // REDIRECT KE WEBSITE VERCEL
                     emailRedirectTo:
                         "https://data-siswa-kappa-six.vercel.app"
                 }
@@ -590,7 +606,7 @@ async function login(event) {
             if (error) throw error;
 
             setMessage(
-                "Tautan login berhasil dikirim. Silakan buka email kamu untuk masuk ke portal."
+                "Tautan login berhasil dikirim. Silakan periksa email kamu."
             );
 
             return;
@@ -689,17 +705,11 @@ function showDashboard() {
         "Anda masuk sebagai " + currentProfile.role;
 
     [
-        "studentArea",
         "teacherArea",
         "adminArea"
     ].forEach(id => {
         $(id).classList.add("hidden");
     });
-
-    if (currentProfile.role === "siswa") {
-        $("studentArea").classList.remove("hidden");
-        loadStudent();
-    }
 
     if (currentProfile.role === "guru") {
         $("teacherArea").classList.remove("hidden");
@@ -714,13 +724,15 @@ function showDashboard() {
 
 
 // =================================
-// 9. DATA PEMBELAJARAN SISWA
+// 9. INFORMASI PEMBELAJARAN PUBLIK
 // =================================
 
-async function loadStudent() {
+async function loadPublicLearning() {
 
-    $("studentContent").textContent =
-        "Memuat informasi...";
+    const container = $("publicLearning");
+
+    container.textContent =
+        "Memuat informasi pembelajaran...";
 
     const { data, error } = await db
         .from("pembelajaran")
@@ -730,37 +742,45 @@ async function loadStudent() {
         });
 
     if (error) {
-        $("studentContent").textContent = error.message;
+
+        container.textContent =
+            "Gagal memuat informasi: " + error.message;
+
         return;
     }
 
-    $("studentContent").innerHTML =
+    if (!data || data.length === 0) {
 
-        data.map(item => `
+        container.textContent =
+            "Belum ada materi atau tugas dari guru.";
 
-            <div class="item">
+        return;
+    }
 
-                <small>
-                    ${escapeHTML(item.jenis)}
-                    ·
-                    ${escapeHTML(item.mata_pelajaran)}
-                </small>
+    container.innerHTML = data.map(item => `
 
-                <h3>${escapeHTML(item.judul)}</h3>
+        <div class="item">
 
-                <p>${escapeHTML(item.isi)}</p>
+            <small>
+                ${escapeHTML(item.jenis)}
+                ·
+                ${escapeHTML(item.mata_pelajaran)}
+            </small>
 
-                ${
-                    item.tenggat
-                    ? `<small>Tenggat: ${escapeHTML(item.tenggat)}</small>`
-                    : ""
-                }
+            <h3>${escapeHTML(item.judul)}</h3>
 
-            </div>
+            <p>${escapeHTML(item.isi)}</p>
 
-        `).join("") ||
+            ${
+                item.tenggat
+                ? `<small>Tenggat: ${escapeHTML(item.tenggat)}</small>`
+                : ""
+            }
 
-        "<p>Belum ada informasi pembelajaran.</p>";
+        </div>
+
+    `).join("");
+
 }
 
 
@@ -913,7 +933,7 @@ async function deleteLearning(id) {
 
     alert("Informasi berhasil dihapus.");
 
-    loadTeacher();
+    await loadTeacher();
 }
 
 
@@ -1042,7 +1062,7 @@ async function deleteContent(id) {
 
     alert("Konten berhasil dihapus.");
 
-    loadAdmin();
+    await loadAdmin();
 }
 
 
@@ -1091,6 +1111,7 @@ async function logout() {
     $("dashboard").classList.add("hidden");
     $("loginPanel").classList.add("hidden");
     $("publicSite").classList.remove("hidden");
+
 }
 
 
@@ -1149,8 +1170,11 @@ db.auth.onAuthStateChange(async (event, session) => {
 });
 
 
-// JALANKAN PEMERIKSAAN SESI
+// =================================
+// 20. JALANKAN WEBSITE
+// =================================
 
+loadPublicLearning();
 initializeAuth();
 
 </script>
