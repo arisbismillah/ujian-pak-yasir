@@ -2,203 +2,201 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TKJ SMK | Portal Digital</title>
 
-    <title>TKJ SMK | Portal Digital</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #081426;
+    color: #eaf4ff;
+    line-height: 1.6;
+}
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+header {
+    padding: 22px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0c1c32;
+    border-bottom: 1px solid #203750;
+}
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #081426;
-            color: #eaf4ff;
-            line-height: 1.6;
-        }
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+    color: #38d9f5;
+}
 
-        header {
-            padding: 22px 7%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #0c1c32;
-            border-bottom: 1px solid #203750;
-        }
+nav a {
+    color: #d8e8f5;
+    text-decoration: none;
+    margin-left: 18px;
+    font-size: 13px;
+}
 
-        .logo {
-            font-size: 21px;
-            font-weight: 800;
-            color: #38d9f5;
-        }
+.hero {
+    padding: 85px 8%;
+    background: linear-gradient(120deg, #0d2744, #102e49);
+}
 
-        nav a {
-            color: #d8e8f5;
-            text-decoration: none;
-            margin-left: 18px;
-            font-size: 13px;
-        }
+.hero h1 {
+    font-size: clamp(30px, 5vw, 52px);
+    line-height: 1.2;
+    margin-bottom: 18px;
+}
 
-        .hero {
-            padding: 85px 8%;
-            background: linear-gradient(120deg, #0d2744, #102e49);
-        }
+.hero h1 span,
+.card h3 {
+    color: #38d9f5;
+}
 
-        .hero h1 {
-            font-size: clamp(30px, 5vw, 52px);
-            line-height: 1.2;
-            margin-bottom: 18px;
-        }
+.hero p {
+    max-width: 600px;
+    color: #b9cad9;
+}
 
-        .hero h1 span {
-            color: #38d9f5;
-        }
+section {
+    padding: 55px 8%;
+}
 
-        .hero p {
-            max-width: 600px;
-            color: #b9cad9;
-        }
+h2 {
+    margin-bottom: 20px;
+}
 
-        section {
-            padding: 55px 8%;
-        }
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
 
-        h2 {
-            margin-bottom: 20px;
-        }
+.card {
+    background: #10243c;
+    border: 1px solid #24415e;
+    padding: 23px;
+    border-radius: 15px;
+}
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 18px;
-        }
+.card h3 {
+    margin-bottom: 10px;
+}
 
-        .card {
-            background: #10243c;
-            border: 1px solid #24415e;
-            padding: 23px;
-            border-radius: 15px;
-        }
+button {
+    background: #13b8d6;
+    color: #041321;
+    border: 0;
+    padding: 12px 18px;
+    border-radius: 9px;
+    font-weight: 800;
+    cursor: pointer;
+    margin: 4px 2px;
+}
 
-        .card h3 {
-            color: #38d9f5;
-            margin-bottom: 10px;
-        }
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
-        button {
-            background: #13b8d6;
-            color: #041321;
-            border: 0;
-            padding: 12px 18px;
-            border-radius: 9px;
-            font-weight: 800;
-            cursor: pointer;
-            margin: 4px 2px;
-        }
+button.secondary {
+    background: #263f59;
+    color: white;
+}
 
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 15px;
+    border: 1px solid #34516d;
+    background: #0b1a2c;
+    color: white;
+    border-radius: 8px;
+    font: inherit;
+}
 
-        button.secondary {
-            background: #263f59;
-            color: white;
-        }
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
 
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0 15px;
-            border: 1px solid #34516d;
-            background: #0b1a2c;
-            color: white;
-            border-radius: 8px;
-            font: inherit;
-        }
+.panel {
+    max-width: 650px;
+    margin: 25px auto;
+    background: #10243c;
+    padding: 25px;
+    border-radius: 15px;
+}
 
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
+.hidden {
+    display: none !important;
+}
 
-        .panel {
-            max-width: 650px;
-            margin: 25px auto;
-            background: #10243c;
-            padding: 25px;
-            border-radius: 15px;
-        }
+.muted {
+    color: #a9bfd1;
+    font-size: 13px;
+}
 
-        .hidden {
-            display: none !important;
-        }
+.item {
+    padding: 15px;
+    margin: 12px 0;
+    background: #0b1a2c;
+    border-radius: 10px;
+    border-left: 3px solid #38d9f5;
+    overflow-wrap: anywhere;
+}
 
-        .muted {
-            color: #a9bfd1;
-            font-size: 13px;
-        }
+.item small {
+    color: #8ca8be;
+}
 
-        .item {
-            padding: 15px;
-            margin: 12px 0;
-            background: #0b1a2c;
-            border-radius: 10px;
-            border-left: 3px solid #38d9f5;
-            overflow-wrap: anywhere;
-        }
+footer {
+    text-align: center;
+    padding: 30px;
+    background: #0c1c32;
+    color: #91aabe;
+}
 
-        .item small {
-            color: #8ca8be;
-        }
+#status {
+    margin: 10px 0;
+    color: #ffcf70;
+    overflow-wrap: anywhere;
+}
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: #0c1c32;
-            color: #91aabe;
-        }
+@media(max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 12px;
+    }
 
-        #status {
-            margin: 10px 0;
-            color: #ffcf70;
-            overflow-wrap: anywhere;
-        }
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
 
-        @media(max-width: 600px) {
-            header {
-                flex-direction: column;
-                gap: 12px;
-            }
+    nav a {
+        margin: 0;
+    }
 
-            nav {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 10px;
-            }
+    .hero {
+        padding: 60px 7%;
+    }
 
-            nav a {
-                margin: 0;
-            }
-
-            .hero {
-                padding: 60px 7%;
-            }
-
-            section {
-                padding: 40px 7%;
-            }
-        }
-    </style>
+    section {
+        padding: 40px 7%;
+    }
+}
+</style>
 </head>
 
 <body>
@@ -255,32 +253,22 @@
 
             <div class="card">
                 <h3>Komputer</h3>
-                <p>
-                    Perakitan, perawatan, dan troubleshooting
-                    perangkat komputer.
-                </p>
+                <p>Perakitan, perawatan, dan troubleshooting perangkat komputer.</p>
             </div>
 
             <div class="card">
                 <h3>Jaringan</h3>
-                <p>
-                    Konfigurasi LAN, WAN, routing,
-                    dan administrasi jaringan.
-                </p>
+                <p>Konfigurasi LAN, WAN, routing, dan administrasi jaringan.</p>
             </div>
 
             <div class="card">
                 <h3>Sistem Operasi</h3>
-                <p>
-                    Administrasi Windows dan Linux.
-                </p>
+                <p>Administrasi Windows dan Linux.</p>
             </div>
 
             <div class="card">
                 <h3>Web</h3>
-                <p>
-                    Dasar pengembangan website dan database.
-                </p>
+                <p>Dasar pengembangan website dan database.</p>
             </div>
 
         </div>
@@ -293,35 +281,23 @@
 
             <div class="card">
                 <h3>Portal Siswa</h3>
-                <p>
-                    Akses materi, tugas, dan pengumuman pembelajaran.
-                </p>
+                <p>Akses materi, tugas, dan pengumuman pembelajaran.</p>
                 <br>
-                <button onclick="showLogin('siswa')">
-                    Login Siswa
-                </button>
+                <button onclick="showLogin('siswa')">Login Siswa</button>
             </div>
 
             <div class="card">
                 <h3>Portal Guru</h3>
-                <p>
-                    Kelola materi, tugas, dan pengumuman.
-                </p>
+                <p>Kelola materi, tugas, dan pengumuman.</p>
                 <br>
-                <button onclick="showLogin('guru')">
-                    Login Guru
-                </button>
+                <button onclick="showLogin('guru')">Login Guru</button>
             </div>
 
             <div class="card">
                 <h3>Portal Admin</h3>
-                <p>
-                    Kelola informasi website TKJ.
-                </p>
+                <p>Kelola informasi website TKJ.</p>
                 <br>
-                <button onclick="showLogin('admin')">
-                    Login Admin
-                </button>
+                <button onclick="showLogin('admin')">Login Admin</button>
             </div>
 
         </div>
@@ -344,31 +320,16 @@
         <form onsubmit="login(event)">
 
             <label>Email</label>
-            <input
-                id="email"
-                type="email"
-                placeholder="Masukkan email"
-                required
-            >
+            <input id="email" type="email" placeholder="Masukkan email" required>
 
             <div id="passwordGroup">
                 <label>Password</label>
-                <input
-                    id="password"
-                    type="password"
-                    placeholder="Masukkan password"
-                >
+                <input id="password" type="password" placeholder="Masukkan password">
             </div>
 
-            <button type="submit" id="loginButton">
-                Masuk
-            </button>
+            <button type="submit" id="loginButton">Masuk</button>
 
-            <button
-                type="button"
-                class="secondary"
-                onclick="backHome()"
-            >
+            <button type="button" class="secondary" onclick="backHome()">
                 Kembali
             </button>
 
@@ -389,21 +350,17 @@
 
         <p id="roleInfo" class="muted"></p>
 
-        <button class="secondary" onclick="logout()">
-            Keluar
-        </button>
+        <button class="secondary" onclick="logout()">Keluar</button>
 
     </div>
 
     <!-- DASHBOARD SISWA -->
 
     <div id="studentArea" class="hidden">
-
         <section>
             <h2>Informasi Pembelajaran</h2>
             <div id="studentContent"></div>
         </section>
-
     </div>
 
     <!-- DASHBOARD GURU -->
@@ -435,10 +392,7 @@
                     <label>Isi Informasi</label>
                     <textarea id="isi" required></textarea>
 
-                    <label>
-                        Tenggat (khusus tugas, opsional)
-                    </label>
-
+                    <label>Tenggat (khusus tugas, opsional)</label>
                     <input id="tenggat" type="date">
 
                     <button type="submit" id="publishButton">
@@ -450,11 +404,9 @@
             </div>
 
             <h2>Data Pembelajaran</h2>
-
             <div id="teacherContent"></div>
 
         </section>
-
     </div>
 
     <!-- DASHBOARD ADMIN -->
@@ -470,12 +422,7 @@
                 <form onsubmit="addContent(event)">
 
                     <label>Kategori</label>
-
-                    <input
-                        id="kategori"
-                        placeholder="Contoh: Informasi"
-                        required
-                    >
+                    <input id="kategori" placeholder="Contoh: Informasi" required>
 
                     <label>Judul</label>
                     <input id="judulWeb" required>
@@ -494,7 +441,6 @@
             <div id="adminContent"></div>
 
         </section>
-
     </div>
 
 </section>
@@ -556,28 +502,23 @@ function showLogin(role) {
     if (role === "siswa" || role === "guru") {
 
         $("passwordGroup").classList.add("hidden");
-
         $("password").required = false;
 
         $("loginDescription").textContent =
             "Masukkan email terdaftar. Tautan login akan dikirim ke email.";
 
-        $("loginButton").textContent =
-            "Kirim Tautan Login";
+        $("loginButton").textContent = "Kirim Tautan Login";
 
     } else {
 
         $("passwordGroup").classList.remove("hidden");
-
         $("password").required = true;
 
         $("loginDescription").textContent =
             "Masukkan email dan password admin.";
 
         $("loginButton").textContent = "Masuk";
-
     }
-
 }
 
 
@@ -592,7 +533,6 @@ function backHome() {
     $("dashboard").classList.add("hidden");
 
     localStorage.removeItem("selectedRole");
-
 }
 
 
@@ -601,9 +541,7 @@ function backHome() {
 // =================================
 
 function setMessage(message) {
-
     $("status").textContent = message;
-
 }
 
 
@@ -619,12 +557,11 @@ async function login(event) {
     const password = $("password").value;
 
     $("loginButton").disabled = true;
-
     setMessage("Sedang memproses...");
 
     try {
 
-        // LOGIN SISWA DAN GURU TANPA PASSWORD
+        // LOGIN SISWA DAN GURU MENGGUNAKAN MAGIC LINK
 
         if (
             selectedRole === "siswa" ||
@@ -642,9 +579,10 @@ async function login(event) {
 
                 options: {
                     shouldCreateUser: false,
+
+                    // REDIRECT KE WEBSITE VERCEL
                     emailRedirectTo:
-                        window.location.origin +
-                        window.location.pathname
+                        "https://data-siswa-kappa-six.vercel.app"
                 }
 
             });
@@ -656,7 +594,6 @@ async function login(event) {
             );
 
             return;
-
         }
 
 
@@ -683,7 +620,6 @@ async function login(event) {
         $("loginButton").disabled = false;
 
     }
-
 }
 
 
@@ -705,11 +641,9 @@ async function loadUserProfile(user) {
         .single();
 
     if (error) {
-
         throw new Error(
             "Profil pengguna tidak ditemukan di user_profiles."
         );
-
     }
 
     const requestedRole =
@@ -723,13 +657,11 @@ async function loadUserProfile(user) {
         await db.auth.signOut();
 
         localStorage.removeItem("selectedRole");
-
         currentUser = null;
 
         throw new Error(
             "Email ini bukan akun " + requestedRole + "."
         );
-
     }
 
     localStorage.removeItem("selectedRole");
@@ -737,7 +669,6 @@ async function loadUserProfile(user) {
     currentProfile = profile;
 
     showDashboard();
-
 }
 
 
@@ -762,38 +693,23 @@ function showDashboard() {
         "teacherArea",
         "adminArea"
     ].forEach(id => {
-
         $(id).classList.add("hidden");
-
     });
 
-
     if (currentProfile.role === "siswa") {
-
         $("studentArea").classList.remove("hidden");
-
         loadStudent();
-
     }
-
 
     if (currentProfile.role === "guru") {
-
         $("teacherArea").classList.remove("hidden");
-
         loadTeacher();
-
     }
-
 
     if (currentProfile.role === "admin") {
-
         $("adminArea").classList.remove("hidden");
-
         loadAdmin();
-
     }
-
 }
 
 
@@ -814,12 +730,8 @@ async function loadStudent() {
         });
 
     if (error) {
-
-        $("studentContent").textContent =
-            error.message;
-
+        $("studentContent").textContent = error.message;
         return;
-
     }
 
     $("studentContent").innerHTML =
@@ -834,20 +746,14 @@ async function loadStudent() {
                     ${escapeHTML(item.mata_pelajaran)}
                 </small>
 
-                <h3>
-                    ${escapeHTML(item.judul)}
-                </h3>
+                <h3>${escapeHTML(item.judul)}</h3>
 
-                <p>
-                    ${escapeHTML(item.isi)}
-                </p>
+                <p>${escapeHTML(item.isi)}</p>
 
                 ${
                     item.tenggat
-                        ? `<small>
-                            Tenggat: ${escapeHTML(item.tenggat)}
-                           </small>`
-                        : ""
+                    ? `<small>Tenggat: ${escapeHTML(item.tenggat)}</small>`
+                    : ""
                 }
 
             </div>
@@ -855,7 +761,6 @@ async function loadStudent() {
         `).join("") ||
 
         "<p>Belum ada informasi pembelajaran.</p>";
-
 }
 
 
@@ -876,12 +781,8 @@ async function loadTeacher() {
         });
 
     if (error) {
-
-        $("teacherContent").textContent =
-            error.message;
-
+        $("teacherContent").textContent = error.message;
         return;
-
     }
 
     $("teacherContent").innerHTML =
@@ -896,31 +797,24 @@ async function loadTeacher() {
                     ${escapeHTML(item.mata_pelajaran)}
                 </small>
 
-                <h3>
-                    ${escapeHTML(item.judul)}
-                </h3>
+                <h3>${escapeHTML(item.judul)}</h3>
 
-                <p>
-                    ${escapeHTML(item.isi)}
-                </p>
+                <p>${escapeHTML(item.isi)}</p>
 
                 ${
                     item.tenggat
-                        ? `<small>
-                            Tenggat: ${escapeHTML(item.tenggat)}
-                           </small>`
-                        : ""
+                    ? `<small>Tenggat: ${escapeHTML(item.tenggat)}</small>`
+                    : ""
                 }
 
                 ${
                     item.dibuat_oleh === currentUser.id
-                        ? `<br>
-                           <button
-                               class="secondary"
-                               onclick="deleteLearning(${Number(item.id)})">
-                               Hapus
-                           </button>`
-                        : ""
+                    ? `<br>
+                       <button class="secondary"
+                       onclick="deleteLearning(${Number(item.id)})">
+                       Hapus
+                       </button>`
+                    : ""
                 }
 
             </div>
@@ -928,7 +822,6 @@ async function loadTeacher() {
         `).join("") ||
 
         "<p>Belum ada data pembelajaran.</p>";
-
 }
 
 
@@ -991,7 +884,6 @@ async function addLearning(event) {
         $("publishButton").disabled = false;
 
     }
-
 }
 
 
@@ -1015,17 +907,13 @@ async function deleteLearning(id) {
         .eq("dibuat_oleh", currentUser.id);
 
     if (error) {
-
         alert(error.message);
-
         return;
-
     }
 
     alert("Informasi berhasil dihapus.");
 
     loadTeacher();
-
 }
 
 
@@ -1046,12 +934,8 @@ async function loadAdmin() {
         });
 
     if (error) {
-
-        $("adminContent").textContent =
-            error.message;
-
+        $("adminContent").textContent = error.message;
         return;
-
     }
 
     $("adminContent").innerHTML =
@@ -1060,23 +944,16 @@ async function loadAdmin() {
 
             <div class="item">
 
-                <small>
-                    ${escapeHTML(item.category)}
-                </small>
+                <small>${escapeHTML(item.category)}</small>
 
-                <h3>
-                    ${escapeHTML(item.title)}
-                </h3>
+                <h3>${escapeHTML(item.title)}</h3>
 
-                <p>
-                    ${escapeHTML(item.body)}
-                </p>
+                <p>${escapeHTML(item.body)}</p>
 
                 <br>
 
-                <button
-                    class="secondary"
-                    onclick="deleteContent(${Number(item.id)})">
+                <button class="secondary"
+                onclick="deleteContent(${Number(item.id)})">
                     Hapus
                 </button>
 
@@ -1085,7 +962,6 @@ async function loadAdmin() {
         `).join("") ||
 
         "<p>Belum ada konten website.</p>";
-
 }
 
 
@@ -1138,7 +1014,6 @@ async function addContent(event) {
         $("contentButton").disabled = false;
 
     }
-
 }
 
 
@@ -1161,17 +1036,13 @@ async function deleteContent(id) {
         .eq("id", id);
 
     if (error) {
-
         alert(error.message);
-
         return;
-
     }
 
     alert("Konten berhasil dihapus.");
 
     loadAdmin();
-
 }
 
 
@@ -1208,11 +1079,8 @@ async function logout() {
     const { error } = await db.auth.signOut();
 
     if (error) {
-
         alert(error.message);
-
         return;
-
     }
 
     currentUser = null;
@@ -1223,12 +1091,11 @@ async function logout() {
     $("dashboard").classList.add("hidden");
     $("loginPanel").classList.add("hidden");
     $("publicSite").classList.remove("hidden");
-
 }
 
 
 // =================================
-// 18. MEMERIKSA SESI SAAT HALAMAN DIBUKA
+// 18. MEMERIKSA SESI
 // =================================
 
 async function initializeAuth() {
@@ -1241,9 +1108,7 @@ async function initializeAuth() {
         if (error) throw error;
 
         if (data.session) {
-
             await loadUserProfile(data.session.user);
-
         }
 
     } catch (error) {
@@ -1258,11 +1123,33 @@ async function initializeAuth() {
         $("publicSite").classList.remove("hidden");
 
     }
-
 }
 
 
-// Jalankan pemeriksaan sesi
+// =================================
+// 19. MENANGANI LOGIN MAGIC LINK
+// =================================
+
+db.auth.onAuthStateChange(async (event, session) => {
+
+    if (event === "SIGNED_IN" && session?.user) {
+
+        if (!currentProfile) {
+
+            try {
+                await loadUserProfile(session.user);
+            } catch (error) {
+                console.error(error.message);
+            }
+
+        }
+
+    }
+
+});
+
+
+// JALANKAN PEMERIKSAAN SESI
 
 initializeAuth();
 
